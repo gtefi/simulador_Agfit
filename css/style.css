@@ -1,0 +1,134 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    display: flex;
+    justify-content: space-between; /* Coloca la hamburguesa en el lado derecho */
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+}
+
+header .logo {
+    color: white;
+    font-size: 24px;
+}
+
+.hamburguesa {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hamburguesa-icon {
+    cursor: pointer;
+}
+
+.hamburguesa-icon div {
+    width: 30px;
+    height: 4px;
+    background-color: white;
+    margin: 5px 0;
+}
+
+/* Navegación móvil oculta por defecto */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+nav ul li {
+    margin: 10px 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+}
+
+nav.hidden {
+    display: none;
+}
+
+/* Sección del simulador */
+#simulador {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #fff;
+    margin: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+#simulador h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+#simulador form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#simulador form label {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+#simulador form input, #simulador form select {
+    padding: 10px;
+    width: 200px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+#simulador form button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#simulador form button:hover {
+    background-color: #218838;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+footer nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+footer nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+footer nav ul li a:hover {
+    text-decoration: underline;
+}
+
+footer p {
+    margin: 10px 0;
+}
