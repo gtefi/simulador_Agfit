@@ -1,4 +1,4 @@
-/* Estilos generales */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -35,7 +35,7 @@ header .logo {
     margin: 5px 0;
 }
 
-/* Navegación móvil oculta por defecto */
+
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -56,7 +56,7 @@ nav.hidden {
     display: none;
 }
 
-/* Sección del simulador */
+
 #simulador {
     text-align: center;
     padding: 50px 20px;
@@ -101,7 +101,7 @@ nav.hidden {
     background-color: #218838;
 }
 
-/* Footer */
+
 footer {
     background-color: #333;
     color: white;
