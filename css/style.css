@@ -8,7 +8,7 @@ body {
 
 header {
     display: flex;
-    justify-content: space-between; /* Coloca la hamburguesa en el lado derecho */
+    justify-content: space-between; 
     align-items: center;
     padding: 10px 20px;
     background-color: #333;
@@ -132,3 +132,4 @@ footer nav ul li a:hover {
 footer p {
     margin: 10px 0;
 }
+/* tengo que agregar las imgs mas adelante y cambiar colores */
