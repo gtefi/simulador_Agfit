@@ -133,10 +133,16 @@ function generarPlanMantener(sesiones) {
     return plan;
 }
 
-const edadSimulada = parseInt(prompt("Introduce tu edad:"));
-const pesoSimulado = parseFloat(prompt("Introduce tu peso (kg):"));
-const alturaSimulada = parseFloat(prompt("Introduce tu altura (en metros):"));
-const objetivoSimulado = prompt("Introduce tu objetivo (perder peso, ganar músculo, mantener):").toLowerCase();
-const sesionesSimuladas = parseInt(prompt("¿Cuántas sesiones de entrenamiento por semana (3 a 5)?"));
+function capturarDatosUsuario() {
+    const edad = parseInt(prompt("Introduce tu edad:"));
+    const peso = parseFloat(prompt("Introduce tu peso (kg):"));
+    const altura = parseFloat(prompt("Introduce tu altura (en metros):"));
+    const objetivo = prompt("Introduce tu objetivo (perder peso, ganar músculo, mantener)").toLowerCase();
+    const sesiones = parseInt(prompt("¿Cuántas sesiones de entrenamiento por semana (3 a 6)?"));
+    
+    
+    generarPlan(edad, peso, altura, objetivo, sesiones);
+}
 
-generarPlan(edadSimulada, pesoSimulado, alturaSimulada, objetivoSimulado, sesionesSimuladas);
+
+capturarDatosUsuario();
