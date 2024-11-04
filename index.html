@@ -3,83 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador AGfit</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Simulador de Plan de Entrenamiento</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-
+    
     <header>
-        <div class="logo">Simulador AGfit</div>
-        <div class="hamburguesa">
-            <div class="hamburguesa-icon" onclick="toggleMenu()">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
+        <nav class="navbar">
+            <div class="navbar-logo">AGfit</div>
+            <ul class="navbar-links">
+                <li><a href="#simulador">Simulador</a></li>
+                <li><a href="#planes">Planes</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <nav id="menu" class="hidden">
-        <ul>
-            <li><a href="#">Simulador</a></li>
-            <li><a href="#">Plan de Entrenamiento</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-    </nav>
 
-
-    <section id="simulador">
-        <h2>Genera tu Plan Personalizado</h2>
-        <form>
-            <label for="age">Edad:</label>
+    <div id="app">
+        <h1>Simulador de Plan de Entrenamiento</h1>
+        <form id="simulador">
+            <label for="age">¿Cuántos años tienes?</label>
             <input type="number" id="age" placeholder="Introduce tu edad">
 
-            <label for="weight">Peso (kg):</label>
+            <label for="weight">¿Cuál es tu peso actual? (kg)</label>
             <input type="number" id="weight" placeholder="Introduce tu peso">
 
-            <label for="height">Altura (m):</label>
+            <label for="height">¿Cuánto mides de altura? (m)</label>
             <input type="number" id="height" placeholder="Introduce tu altura en metros">
 
-            <label for="sessions">Entrenamientos por semana (mínimo 3, máximo 5):</label>
-            <input type="number" id="sessions" placeholder="Introduce un número">
-
-            <label for="goal">Objetivo:</label>
+            <label for="goal">¿Cuál es tu objetivo de fitness?</label>
             <select id="goal">
                 <option value="perder peso">Perder Peso</option>
                 <option value="ganar músculo">Ganar Músculo</option>
                 <option value="mantener">Mantener Condición</option>
             </select>
 
-            <button type="button" id="submit" onclick="generarPlan()">Generar Plan</button>
+            <label for="sessions">¿Cuántas veces entrenarás por semana? (3 a 5)</label>
+            <input type="number" id="sessions" placeholder="Introduce un número">
+
+            <button type="button" onclick="generarPlan(event)">Generar Plan</button>
         </form>
-    </section>
 
-
-    <footer>
-        <div class="footer-content">
-            <p>AGfit</p>
-            <nav>
-                <ul>
-                    <li><a href="#">Simulador</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">Plan</a></li>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Contacto</a></li>
-                    <li><a href="#">Twitter</a></li>
-                </ul>
-            </nav>
-            <p>© 2024 AGfit - Todos los derechos reservados</p>
-        </div>
-    </footer>
-
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById("menu");
-            menu.classList.toggle("hidden");
-        }
-    </script>
+        
+        <div id="planOutput"></div>
+    </div>
 
     
-    <script src="js/index.js"></script>
+    <footer>
+        <p>&copy; 2024 AGfit. Todos los derechos reservados.</p>
+        <ul class="footer-links">
+            <li><a href="#simulador">Simulador</a></li>
+            <li><a href="#planes">Planes</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#">Política de Privacidad</a></li>
+        </ul>
+    </footer>
+
+    
+    <script src="./js/index.js"></script>
 </body>
 </html>

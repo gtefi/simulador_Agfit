@@ -1,8 +1,3 @@
-//Estos arrays y variables globales sirven para almacenar los planes generados 
-//y el progreso del usuario a lo largo de su entrenamiento
-let historialPlanes = [];
-let progreso = [];
-let diasEntrenados = 0;
 
 function validarDatos(edad, peso, altura, sesiones) {
     if (isNaN(edad) || isNaN(peso) || isNaN(altura) || isNaN(sesiones)) {
@@ -14,7 +9,7 @@ function validarDatos(edad, peso, altura, sesiones) {
     if (peso < 40 || peso > 200) {
         return "Error: El peso debe estar entre 40kg y 200kg.";
     }
-    if (altura < 1 || altura > 2.5) { 
+    if (altura < 1 || altura > 2.5) {
         return "Error: La altura debe estar entre 1m y 2.5m.";
     }
     if (sesiones < 3 || sesiones > 5) {
@@ -23,18 +18,29 @@ function validarDatos(edad, peso, altura, sesiones) {
     return null;
 }
 
-function generarPlan(edad, peso, altura, objetivo, sesiones) {
-    console.log(`Datos ingresados: Edad: ${edad}, Peso: ${peso}, Altura: ${altura}, Entrenamientos por semana: ${sesiones}, Objetivo: ${objetivo}`);
-    
+
+function generarPlan(event) {
+    event.preventDefault();
+
+    const edad = parseInt(document.getElementById("age").value);
+    const peso = parseFloat(document.getElementById("weight").value);
+    const altura = parseFloat(document.getElementById("height").value);
+    const objetivo = document.getElementById("goal").value;
+    const sesiones = parseInt(document.getElementById("sessions").value);
+
+    console.log(`Edad ingresada: ${edad}`);
+    console.log(`Peso ingresado: ${peso}`);
+    console.log(`Altura ingresada: ${altura}`);
+    console.log(`Objetivo seleccionado: ${objetivo}`);
+    console.log(`Sesiones por semana: ${sesiones}`);
+
     const error = validarDatos(edad, peso, altura, sesiones);
     if (error) {
         console.log(error);
         return;
     }
 
-    
     calcularIMC(peso, altura);
-    sugerirNutricion(objetivo);
 
     let plan = '';
     if (objetivo === 'perder peso') {
@@ -48,101 +54,41 @@ function generarPlan(edad, peso, altura, objetivo, sesiones) {
         return;
     }
 
-    historialPlanes.push(plan);
     console.log(`Plan generado para el objetivo de ${objetivo}:`);
     console.log(plan);
+    document.getElementById("planOutput").innerText = plan;
 }
+
 
 function calcularIMC(peso, altura) {
-    let imc = peso / (altura * altura);
+    const imc = peso / (altura * altura);
     console.log(`IMC Calculado: ${imc}`);
-}
-
-function sugerirNutricion(objetivo) {
-    if (objetivo === "perder peso") {
-        console.log("Recomendación: Mantén un déficit calórico.");
-    } else if (objetivo === "ganar músculo") {
-        console.log("Recomendación: Aumenta la ingesta de proteínas.");
-    } else {
-        console.log("Recomendación: Mantén una dieta equilibrada.");
-    }
-}
-
-
-function ajustarNivel(nivel, entrenamientos) {
-    return entrenamientos.map(entreno => `${entreno} - Nivel: ${nivel}`);
-}
-
-//Esta función filtra la lista de entrenamientos para devolver 
-//solo aquellos que contienen la palabra "intensidad"
-function entrenamientosAltaIntensidad(entrenamientos) {
-    return entrenamientos.filter(entreno => entreno.includes("intensidad"));
-}
-
-
-function calcularCalorias(entrenamientos) {
-    return entrenamientos.reduce((total, entreno) => total + entreno.calorias, 0);
 }
 
 
 function generarPlanPerderPeso(sesiones) {
-    const entrenamientos = [
-        { nombre: "Cardio de alta intensidad", calorias: 300 },
-        { nombre: "Fuerza moderada", calorias: 200 },
-        { nombre: "Entrenamiento funcional", calorias: 250 },
-        { nombre: "HIIT", calorias: 350 }
-    ];
-
-    
-    const entrenamientosIntensos = entrenamientosAltaIntensidad(entrenamientos.map(e => e.nombre));
-    
-    // Calculamos las calorías quemadas en el plan
-    const caloriasTotales = calcularCalorias(entrenamientos);
-    console.log(`Calorías totales del plan: ${caloriasTotales}`);
-
+    const entrenamientos = ["Cardio de alta intensidad", "Fuerza moderada", "Entrenamiento funcional", "HIIT", "Cardio de baja intensidad"];
     let plan = '';
     for (let i = 1; i <= sesiones; i++) {
-        plan += `Día ${i}: ${entrenamientosIntensos[(i - 1) % entrenamientosIntensos.length]}\n`;
+        plan += `Día ${i}: ${entrenamientos[(i - 1) % entrenamientos.length]}\n`;
     }
     return plan;
 }
 
 function generarPlanGanarMusculo(sesiones) {
-    const entrenamientos = ["Entrenamiento de fuerza: Tren Superior", "Entrenamiento de fuerza: Tren Inferior", "Entrenamiento de resistencia", "Entrenamiento con pesas pesadas", "Entrenamiento de hipertrofia", "Descanso activo"];
-
-    // uso map para ajustar el nivle de entrenamiento
-    const planNivelAvanzado = ajustarNivel("Avanzado", entrenamientos);
-
+    const entrenamientos = ["Entrenamiento de fuerza: Tren Superior", "Entrenamiento de fuerza: Tren Inferior", "Entrenamiento de resistencia", "Entrenamiento con pesas pesadas", "Descanso activo"];
     let plan = '';
     for (let i = 1; i <= sesiones; i++) {
-        plan += `Día ${i}: ${planNivelAvanzado[(i - 1) % planNivelAvanzado.length]}\n`;
+        plan += `Día ${i}: ${entrenamientos[(i - 1) % entrenamientos.length]}\n`;
     }
     return plan;
 }
 
 function generarPlanMantener(sesiones) {
-    const entrenamientos = ["Cardio de baja intensidad", "Entrenamiento funcional", "Yoga o pilates", "Entrenamiento con peso corporal", "Entrenamiento de flexibilidad", "Descanso activo"];
-
-    
-    const planNivelIntermedio = ajustarNivel("Intermedio", entrenamientos);
-
+    const entrenamientos = ["Cardio de baja intensidad", "Entrenamiento funcional", "Yoga o pilates", "Entrenamiento con peso corporal", "Descanso activo"];
     let plan = '';
     for (let i = 1; i <= sesiones; i++) {
-        plan += `Día ${i}: ${planNivelIntermedio[(i - 1) % planNivelIntermedio.length]}\n`;
+        plan += `Día ${i}: ${entrenamientos[(i - 1) % entrenamientos.length]}\n`;
     }
     return plan;
 }
-
-function capturarDatosUsuario() {
-    const edad = parseInt(prompt("Introduce tu edad:"));
-    const peso = parseFloat(prompt("Introduce tu peso (kg):"));
-    const altura = parseFloat(prompt("Introduce tu altura (en metros):"));
-    const objetivo = prompt("Introduce tu objetivo (perder peso, ganar músculo, mantener)").toLowerCase();
-    const sesiones = parseInt(prompt("¿Cuántas sesiones de entrenamiento por semana (3 a 6)?"));
-    
-    
-    generarPlan(edad, peso, altura, objetivo, sesiones);
-}
-
-
-capturarDatosUsuario();
