@@ -1,4 +1,10 @@
+// Función para el menú desplegable
+function toggleMenu() {
+    const menu = document.getElementById("menu");
+    menu.classList.toggle("active");
+}
 
+// Función para validar los datos de entrada
 function validarDatos(edad, peso, altura, sesiones) {
     if (isNaN(edad) || isNaN(peso) || isNaN(altura) || isNaN(sesiones)) {
         return "Error: Edad, peso, altura y sesiones deben ser valores numéricos.";
@@ -18,21 +24,18 @@ function validarDatos(edad, peso, altura, sesiones) {
     return null;
 }
 
+// Función para calcular el IMC
+function calcularIMC(peso, altura) {
+    return peso / (altura * altura);
+}
 
-function generarPlan(event) {
-    event.preventDefault();
-
+// Función para generar el plan de entrenamiento y mostrar el IMC
+function generarPlan() {
     const edad = parseInt(document.getElementById("age").value);
     const peso = parseFloat(document.getElementById("weight").value);
     const altura = parseFloat(document.getElementById("height").value);
     const objetivo = document.getElementById("goal").value;
     const sesiones = parseInt(document.getElementById("sessions").value);
-
-    console.log(`Edad ingresada: ${edad}`);
-    console.log(`Peso ingresado: ${peso}`);
-    console.log(`Altura ingresada: ${altura}`);
-    console.log(`Objetivo seleccionado: ${objetivo}`);
-    console.log(`Sesiones por semana: ${sesiones}`);
 
     const error = validarDatos(edad, peso, altura, sesiones);
     if (error) {
@@ -40,55 +43,62 @@ function generarPlan(event) {
         return;
     }
 
-    calcularIMC(peso, altura);
+    const imc = calcularIMC(peso, altura);
+    mostrarIMC(imc, peso, altura);
+    mostrarPlanDeEntrenamiento(objetivo, sesiones);
+}
 
-    let plan = '';
-    if (objetivo === 'perder peso') {
-        plan = generarPlanPerderPeso(sesiones);
-    } else if (objetivo === 'ganar músculo') {
-        plan = generarPlanGanarMusculo(sesiones);
-    } else if (objetivo === 'mantener') {
-        plan = generarPlanMantener(sesiones);
+// Función para mostrar el IMC y recomendaciones
+function mostrarIMC(imc, peso, altura) {
+    const imcActual = document.getElementById("imc-actual");
+    const rangoSaludable = document.getElementById("rango-saludable");
+    const recomendacionPeso = document.getElementById("recomendacion-peso");
+
+    imcActual.innerText = `Tu IMC actual: ${imc.toFixed(1)}`;
+
+    const imcMin = 18.5;
+    const imcMax = 24.9;
+    rangoSaludable.innerText = `Rango saludable de IMC: ${imcMin} - ${imcMax}`;
+
+    const pesoMin = imcMin * (altura * altura);
+    const pesoMax = imcMax * (altura * altura);
+
+    if (imc < imcMin) {
+        const pesoNecesario = pesoMin - peso;
+        recomendacionPeso.innerText = `Necesitas ganar aproximadamente ${pesoNecesario.toFixed(1)} kg para estar en el rango saludable.`;
+    } else if (imc > imcMax) {
+        const pesoNecesario = peso - pesoMax;
+        recomendacionPeso.innerText = `Necesitas perder aproximadamente ${pesoNecesario.toFixed(1)} kg para estar en el rango saludable.`;
     } else {
-        console.log("Error: Objetivo inválido.");
-        return;
+        recomendacionPeso.innerText = "Tu peso está dentro del rango saludable.";
     }
-
-    console.log(`Plan generado para el objetivo de ${objetivo}:`);
-    console.log(plan);
-    document.getElementById("planOutput").innerText = plan;
 }
 
+// Función para mostrar el plan de entrenamiento
+function mostrarPlanDeEntrenamiento(objetivo, sesiones) {
+    const planContainer = document.getElementById("training-plan");
+    planContainer.innerHTML = ""; // Limpiar el contenido previo
 
-function calcularIMC(peso, altura) {
-    const imc = peso / (altura * altura);
-    console.log(`IMC Calculado: ${imc}`);
+    const ejercicios = {
+        "perder peso": ["Cardio de alta intensidad", "HIIT", "Entrenamiento funcional", "Circuito de resistencia", "Cardio moderado"],
+        "ganar músculo": ["Fuerza tren superior", "Fuerza tren inferior", "Hipertrofia", "Resistencia", "Descanso activo"],
+        "mantener": ["Cardio ligero", "Entrenamiento funcional", "Pilates", "Estiramientos", "Descanso activo"]
+    };
+
+    for (let i = 0; i < sesiones; i++) {
+        const dia = i + 1;
+        const ejercicio = ejercicios[objetivo][i % ejercicios[objetivo].length];
+
+        const diaElement = document.createElement("div");
+        diaElement.innerHTML = `
+            <p>Día ${dia}: ${ejercicio}</p>
+            <button onclick="marcarCompletado(${dia})">Marcar como completado</button>
+        `;
+        planContainer.appendChild(diaElement);
+    }
 }
 
-
-function generarPlanPerderPeso(sesiones) {
-    const entrenamientos = ["Cardio de alta intensidad", "Fuerza moderada", "Entrenamiento funcional", "HIIT", "Cardio de baja intensidad"];
-    let plan = '';
-    for (let i = 1; i <= sesiones; i++) {
-        plan += `Día ${i}: ${entrenamientos[(i - 1) % entrenamientos.length]}\n`;
-    }
-    return plan;
-}
-
-function generarPlanGanarMusculo(sesiones) {
-    const entrenamientos = ["Entrenamiento de fuerza: Tren Superior", "Entrenamiento de fuerza: Tren Inferior", "Entrenamiento de resistencia", "Entrenamiento con pesas pesadas", "Descanso activo"];
-    let plan = '';
-    for (let i = 1; i <= sesiones; i++) {
-        plan += `Día ${i}: ${entrenamientos[(i - 1) % entrenamientos.length]}\n`;
-    }
-    return plan;
-}
-
-function generarPlanMantener(sesiones) {
-    const entrenamientos = ["Cardio de baja intensidad", "Entrenamiento funcional", "Yoga o pilates", "Entrenamiento con peso corporal", "Descanso activo"];
-    let plan = '';
-    for (let i = 1; i <= sesiones; i++) {
-        plan += `Día ${i}: ${entrenamientos[(i - 1) % entrenamientos.length]}\n`;
-    }
-    return plan;
+// Función para marcar un día como completado
+function marcarCompletado(dia) {
+    alert(`Día ${dia} completado!`);
 }

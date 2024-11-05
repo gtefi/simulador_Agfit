@@ -7,60 +7,65 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    
     <header>
-        <nav class="navbar">
-            <div class="navbar-logo">AGfit</div>
-            <ul class="navbar-links">
-                <li><a href="#simulador">Simulador</a></li>
-                <li><a href="#planes">Planes</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+        <div class="logo">Simulador AGfit</div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="menu">
+            <ul>
+                <li><a href="#plan">Generar Plan</a></li>
+                <li><a href="#workshop">Workshop</a></li>
             </ul>
         </nav>
     </header>
 
+    <section id="plan">
+        <h2>Genera tu Plan Personalizado</h2>
+        <form id="planForm">
+            <label>Edad:</label>
+            <input type="number" id="age" placeholder="Introduce tu edad" required>
 
-    <div id="app">
-        <h1>Simulador de Plan de Entrenamiento</h1>
-        <form id="simulador">
-            <label for="age">¿Cuántos años tienes?</label>
-            <input type="number" id="age" placeholder="Introduce tu edad">
+            <label>Peso (kg):</label>
+            <input type="number" id="weight" placeholder="Introduce tu peso" required>
 
-            <label for="weight">¿Cuál es tu peso actual? (kg)</label>
-            <input type="number" id="weight" placeholder="Introduce tu peso">
+            <label>Altura (m):</label>
+            <input type="number" id="height" placeholder="Introduce tu altura" required>
 
-            <label for="height">¿Cuánto mides de altura? (m)</label>
-            <input type="number" id="height" placeholder="Introduce tu altura en metros">
-
-            <label for="goal">¿Cuál es tu objetivo de fitness?</label>
+            <label>Objetivo:</label>
             <select id="goal">
                 <option value="perder peso">Perder Peso</option>
                 <option value="ganar músculo">Ganar Músculo</option>
                 <option value="mantener">Mantener Condición</option>
             </select>
 
-            <label for="sessions">¿Cuántas veces entrenarás por semana? (3 a 5)</label>
-            <input type="number" id="sessions" placeholder="Introduce un número">
+            <label>Entrenamientos por semana (3 a 5):</label>
+            <input type="number" id="sessions" min="3" max="5" required>
 
-            <button type="button" onclick="generarPlan(event)">Generar Plan</button>
+            <button type="button" onclick="generarPlan()">Generar Plan</button>
         </form>
-
-        
-        <div id="planOutput"></div>
-    </div>
+    </section>
 
     
+    <section id="imc-info">
+        <h2>Índice de Masa Corporal (IMC)</h2>
+        <p id="imc-actual"></p>
+        <p id="rango-saludable"></p>
+        <p id="recomendacion-peso"></p>
+    </section>
+
+    
+    <section id="entrenamiento">
+        <h2>Tu Plan de Entrenamiento</h2>
+        <div id="training-plan"></div>
+    </section>
+
     <footer>
-        <p>&copy; 2024 AGfit. Todos los derechos reservados.</p>
-        <ul class="footer-links">
-            <li><a href="#simulador">Simulador</a></li>
-            <li><a href="#planes">Planes</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-            <li><a href="#">Política de Privacidad</a></li>
-        </ul>
+        <p>© 2024 AGfit - Todos los derechos reservados</p>
     </footer>
 
-    
     <script src="./js/index.js"></script>
 </body>
 </html>
