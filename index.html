@@ -3,69 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Plan de Entrenamiento</title>
+    <title>Simulador Fitness Completo</title>
     <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
-        <div class="logo">Simulador AGfit</div>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav id="menu">
-            <ul>
-                <li><a href="#plan">Generar Plan</a></li>
-                <li><a href="#workshop">Workshop</a></li>
-            </ul>
+        <nav>
+            <div class="menu-container">
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul id="menu" class="menu">
+                    <li><a href="#simulador">Simulador</a></li>
+                    <li><a href="#chart-container">IMC</a></li>
+                    <li><a href="#progreso">Registro de Progreso</a></li>
+                </ul>
+            </div>
         </nav>
     </header>
 
-    <section id="plan">
-        <h2>Genera tu Plan Personalizado</h2>
-        <form id="planForm">
-            <label>Edad:</label>
-            <input type="number" id="age" placeholder="Introduce tu edad" required>
-
-            <label>Peso (kg):</label>
-            <input type="number" id="weight" placeholder="Introduce tu peso" required>
-
-            <label>Altura (m):</label>
-            <input type="number" id="height" placeholder="Introduce tu altura" required>
-
-            <label>Objetivo:</label>
-            <select id="goal">
-                <option value="perder peso">Perder Peso</option>
-                <option value="ganar músculo">Ganar Músculo</option>
-                <option value="mantener">Mantener Condición</option>
-            </select>
-
-            <label>Entrenamientos por semana (3 a 5):</label>
-            <input type="number" id="sessions" min="3" max="5" required>
-
-            <button type="button" onclick="generarPlan()">Generar Plan</button>
-        </form>
-    </section>
-
+    <main>
+        <section id="simulador">
+            <h2>Simulador de Plan de Entrenamiento</h2>
+            <div class="carousel">
+                <div class="carousel-container">
+                    <!-- Preguntas del simulador -->
+                    <div class="carousel-slide" id="question-1">
+                        <h3>¿Cuántos años tienes?</h3>
+                        <input type="number" id="age" required>
+                        <button onclick="nextSlide(1)">Siguiente</button>
+                    </div>
+                    <div class="carousel-slide" id="question-2">
+                        <h3>¿Cuál es tu peso actual? (kg)</h3>
+                        <input type="number" id="weight" step="0.1" required>
+                        <button onclick="nextSlide(2)">Siguiente</button>
+                    </div>
+                    <div class="carousel-slide" id="question-3">
+                        <h3>¿Cuánto mides de altura? (cm)</h3>
+                        <input type="number" id="height" required>
+                        <button onclick="nextSlide(3)">Siguiente</button>
+                    </div>
+                    <div class="carousel-slide" id="question-4">
+                        <h3>¿Cuál es tu objetivo de fitness?</h3>
+                        <select id="fitness-goal">
+                            <option value="perder peso">Perder Peso</option>
+                            <option value="ganar músculo">Ganar Músculo</option>
+                            <option value="mantener">Mantener Condición</option>
+                        </select>
+                        <button onclick="nextSlide(4)">Siguiente</button>
+                    </div>
+                    <div class="carousel-slide" id="question-5">
+                        <h3>¿Cuántas veces entrenarás por semana? (3 a 5)</h3>
+                        <input type="number" id="sessions" min="3" max="5" required>
+                        <button onclick="generateTrainingPlan()">Finalizar</button>
+                    </div>
+                </div>
+            </div>
     
-    <section id="imc-info">
-        <h2>Índice de Masa Corporal (IMC)</h2>
-        <p id="imc-actual"></p>
-        <p id="rango-saludable"></p>
-        <p id="recomendacion-peso"></p>
-    </section>
-
+            <div id="chart-container">
+                <h2>Gráfico IMC</h2>
+                <canvas id="imc-chart" width="400" height="200"></canvas>
+            </div>
     
-    <section id="entrenamiento">
-        <h2>Tu Plan de Entrenamiento</h2>
-        <div id="training-plan"></div>
-    </section>
+            <div id="entrenamiento-plan"></div>
+        </section>
+
+        <section id="progreso">
+            <h3>Registro de Progreso</h3>
+            <form id="progress-form">
+                <label for="month">Mes de entrenamiento (1 a 12):</label>
+                <input type="number" id="month" min="1" max="12" required>
+                <label for="current-weight">Peso actual (kg):</label>
+                <input type="number" id="current-weight" step="0.1" required>
+                <button type="submit">Registrar Progreso</button>
+            </form>
+            <canvas id="progress-chart" width="400" height="200"></canvas>
+        </section>
+    </main>
 
     <footer>
-        <p>© 2024 AGfit - Todos los derechos reservados</p>
+        <p>© 2024 Simulador Fitness - Todos los derechos reservados</p>
     </footer>
 
     <script src="./js/index.js"></script>
+    <script src="./js/graficos.js"></script>
+    <script src="./js/apis.js"></script>
 </body>
 </html>

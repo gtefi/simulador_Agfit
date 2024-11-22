@@ -1,104 +1,153 @@
-// Función para el menú desplegable
+// Toggle menu function
 function toggleMenu() {
-    const menu = document.getElementById("menu");
-    menu.classList.toggle("active");
+    const menu = document.getElementById('menu');
+    menu.classList.toggle('active');
 }
 
-// Función para validar los datos de entrada
-function validarDatos(edad, peso, altura, sesiones) {
-    if (isNaN(edad) || isNaN(peso) || isNaN(altura) || isNaN(sesiones)) {
-        return "Error: Edad, peso, altura y sesiones deben ser valores numéricos.";
-    }
-    if (edad < 15 || edad > 80) {
-        return "Error: La edad debe estar entre 15 y 80 años.";
-    }
-    if (peso < 40 || peso > 200) {
-        return "Error: El peso debe estar entre 40kg y 200kg.";
-    }
-    if (altura < 1 || altura > 2.5) {
-        return "Error: La altura debe estar entre 1m y 2.5m.";
-    }
-    if (sesiones < 3 || sesiones > 5) {
-        return "Error: El número de entrenamientos debe estar entre 3 y 5.";
-    }
-    return null;
+// Smooth scroll to sections
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('menu').classList.remove('active'); // Cierra el menú tras hacer clic
+    });
+});
+let currentSlide = 0;
+let chartInstance = null; // Para el gráfico de IMC
+let progressChart = null; // Para el gráfico de progreso
+let progressData = JSON.parse(localStorage.getItem('progressData')) || []; // Cargar progreso desde localStorage
+
+// Función para avanzar en el carrusel
+function nextSlide(index) {
+    const carousel = document.querySelector(".carousel-container");
+    currentSlide = index;
+    carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
 }
 
-// Función para calcular el IMC
-function calcularIMC(peso, altura) {
-    return peso / (altura * altura);
+// Función para generar el gráfico de IMC
+function createIMCChart(imc, idealIMC) {
+    const ctx = document.getElementById('imc-chart').getContext('2d');
+    if (chartInstance) chartInstance.destroy();
+
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['IMC Actual', 'IMC Ideal'],
+            datasets: [{
+                label: 'Índice de Masa Corporal',
+                data: [imc, idealIMC],
+                backgroundColor: ['#42A5F5', '#66BB6A'],
+                borderColor: ['#1E88E5', '#43A047'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
 }
 
-// Función para generar el plan de entrenamiento y mostrar el IMC
-function generarPlan() {
-    const edad = parseInt(document.getElementById("age").value);
-    const peso = parseFloat(document.getElementById("weight").value);
-    const altura = parseFloat(document.getElementById("height").value);
-    const objetivo = document.getElementById("goal").value;
-    const sesiones = parseInt(document.getElementById("sessions").value);
+// Función para registrar el progreso
+function registerProgress(e) {
+    e.preventDefault();
+    const month = parseInt(document.getElementById("month").value);
+    const currentWeight = parseFloat(document.getElementById("current-weight").value);
 
-    const error = validarDatos(edad, peso, altura, sesiones);
-    if (error) {
-        console.log(error);
+    if (month < 1 || month > 12) {
+        alert("Por favor, ingresa un mes válido entre 1 y 12.");
         return;
     }
 
-    const imc = calcularIMC(peso, altura);
-    mostrarIMC(imc, peso, altura);
-    mostrarPlanDeEntrenamiento(objetivo, sesiones);
-}
+    // Verificar si ya existe un registro para el mes
+    const existingEntry = progressData.find(entry => entry.month === month);
 
-// Función para mostrar el IMC y recomendaciones
-function mostrarIMC(imc, peso, altura) {
-    const imcActual = document.getElementById("imc-actual");
-    const rangoSaludable = document.getElementById("rango-saludable");
-    const recomendacionPeso = document.getElementById("recomendacion-peso");
-
-    imcActual.innerText = `Tu IMC actual: ${imc.toFixed(1)}`;
-
-    const imcMin = 18.5;
-    const imcMax = 24.9;
-    rangoSaludable.innerText = `Rango saludable de IMC: ${imcMin} - ${imcMax}`;
-
-    const pesoMin = imcMin * (altura * altura);
-    const pesoMax = imcMax * (altura * altura);
-
-    if (imc < imcMin) {
-        const pesoNecesario = pesoMin - peso;
-        recomendacionPeso.innerText = `Necesitas ganar aproximadamente ${pesoNecesario.toFixed(1)} kg para estar en el rango saludable.`;
-    } else if (imc > imcMax) {
-        const pesoNecesario = peso - pesoMax;
-        recomendacionPeso.innerText = `Necesitas perder aproximadamente ${pesoNecesario.toFixed(1)} kg para estar en el rango saludable.`;
+    if (existingEntry) {
+        existingEntry.currentWeight = currentWeight;
     } else {
-        recomendacionPeso.innerText = "Tu peso está dentro del rango saludable.";
+        progressData.push({ month, currentWeight });
+    }
+
+    progressData.sort((a, b) => a.month - b.month); // Ordenar por mes
+    localStorage.setItem('progressData', JSON.stringify(progressData)); // Guardar en localStorage
+    updateProgressChart();
+}
+
+// Función para actualizar el gráfico de progreso
+function updateProgressChart() {
+    const ctx = document.getElementById('progress-chart').getContext('2d');
+    if (progressChart) progressChart.destroy();
+
+    const labels = progressData.map(data => `Mes ${data.month}`);
+    const weights = progressData.map(data => data.currentWeight);
+
+    progressChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Peso Actual (kg)',
+                data: weights,
+                backgroundColor: 'rgba(66, 165, 245, 0.2)',
+                borderColor: '#42A5F5',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: false }
+            }
+        }
+    });
+}
+
+// Función para generar el plan de entrenamiento
+async function generateTrainingPlan() {
+    const weight = parseFloat(document.getElementById("weight").value);
+    const height = parseFloat(document.getElementById("height").value) / 100;
+    const fitnessGoal = document.getElementById("fitness-goal").value;
+    const sessions = parseInt(document.getElementById("sessions").value);
+
+    const imc = (weight / (height * height)).toFixed(1);
+    const idealIMC = 22;
+
+    createIMCChart(imc, idealIMC);
+
+    const planContainer = document.getElementById("entrenamiento-plan");
+    planContainer.innerHTML = `
+        <h3>Tu Plan de Entrenamiento</h3>
+        <p>IMC Actual: ${imc}</p>
+    `;
+
+    let categoryId;
+    switch (fitnessGoal) {
+        case "perder peso": categoryId = 10; break;
+        case "ganar músculo": categoryId = 8; break;
+        case "mantener": categoryId = 12; break;
+        default: return;
+    }
+
+    try {
+        const response = await fetch(`https://wger.de/api/v2/exercise/?category=${categoryId}&language=2&status=2`);
+        const data = await response.json();
+
+        for (let i = 1; i <= sessions; i++) {
+            const exercises = data.results.slice((i - 1) * 4, i * 4)
+                .map(ex => `<li>${ex.name}</li>`).join("");
+
+            planContainer.innerHTML += `
+                <div class="day-plan">
+                    <h4>Día ${i}</h4>
+                    <ul>${exercises}</ul>
+                </div>
+            `;
+        }
+    } catch (error) {
+        planContainer.innerHTML += `<p>Error al cargar el plan.</p>`;
     }
 }
 
-// Función para mostrar el plan de entrenamiento
-function mostrarPlanDeEntrenamiento(objetivo, sesiones) {
-    const planContainer = document.getElementById("training-plan");
-    planContainer.innerHTML = ""; // Limpiar el contenido previo
-
-    const ejercicios = {
-        "perder peso": ["Cardio de alta intensidad", "HIIT", "Entrenamiento funcional", "Circuito de resistencia", "Cardio moderado"],
-        "ganar músculo": ["Fuerza tren superior", "Fuerza tren inferior", "Hipertrofia", "Resistencia", "Descanso activo"],
-        "mantener": ["Cardio ligero", "Entrenamiento funcional", "Pilates", "Estiramientos", "Descanso activo"]
-    };
-
-    for (let i = 0; i < sesiones; i++) {
-        const dia = i + 1;
-        const ejercicio = ejercicios[objetivo][i % ejercicios[objetivo].length];
-
-        const diaElement = document.createElement("div");
-        diaElement.innerHTML = `
-            <p>Día ${dia}: ${ejercicio}</p>
-            <button onclick="marcarCompletado(${dia})">Marcar como completado</button>
-        `;
-        planContainer.appendChild(diaElement);
-    }
-}
-
-// Función para marcar un día como completado
-function marcarCompletado(dia) {
-    alert(`Día ${dia} completado!`);
-}
+document.getElementById("progress-form").addEventListener("submit", registerProgress);
+if (progressData.length > 0) updateProgressChart();

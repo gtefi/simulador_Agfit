@@ -1,112 +1,182 @@
-
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #ffffff;
+    background-color: #222;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #1a1a1a;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
-.logo {
-    font-size: 1.5rem;
-    color: #00ff7f;
-}
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.hamburger span {
-    background-color: #ffffff;
-    height: 3px;
-    width: 25px;
-    margin: 4px;
-}
-
-nav {
-    display: flex;
-}
-
 nav ul {
     list-style: none;
     display: flex;
+    justify-content: center;
     margin: 0;
     padding: 0;
 }
 
 nav ul li {
-    margin: 0 1rem;
+    margin: 0 15px;
 }
 
 nav ul li a {
-    color: #ffffff;
+    color: #00ff88;
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
 }
 
-section {
-    margin: 2rem auto;
-    padding: 1.5rem;
-    max-width: 500px;
-    background: #1a1a1a;
-    border-radius: 8px;
+nav ul li a:hover {
+    color: #fff;
 }
 
-h2 {
-    color: #00ff7f;
+main {
+    padding: 20px;
+    text-align: center;
+}
+.menu-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-toggle {
+    display: none;
+    background-color: #00ff88;
+    color: #222;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0 15px;
+}
+
+.menu li a {
+    color: #00ff88;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.menu li a:hover {
+    color: #fff;
+}
+
+/* Responsive Menu */
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        background-color: #333;
+        padding: 10px;
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        border-radius: 10px;
+    }
+
+    .menu.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}
+.carousel {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 10px;
+    background-color: #333;
+}
+
+.carousel-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+    flex: 1 0 92%;
+    padding: 20px;
+    text-align: center;
+}
+
+.carousel-slide h3 {
+    margin-bottom: 10px;
+}
+
+input, select, button {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: #fff;
 }
 
 button {
-    background-color: #00ff7f;
-    border: none;
-    color: #000;
-    padding: 0.5rem 1rem;
+    background-color: #00ff88;
+    font-weight: bold;
     cursor: pointer;
-    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #00cc70;
+}
+
+section {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    border-radius: 10px;
+    background-color: #333;
+}
+
+section h2 {
+    color: #00ff88;
+    margin-bottom: 20px;
 }
 
 footer {
     text-align: center;
-    padding: 1rem;
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: #333;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    nav {
-        display: none;
-        flex-direction: column;
-    }
+footer p {
+    color: #00ff88;
+    margin: 0;
+}
 
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
-    #menu.active {
-        display: flex;
-        background-color: #1a1a1a;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        z-index: 999;
-    }
+canvas {
+    margin-top: 20px;
+    max-width: 100%;
 }
