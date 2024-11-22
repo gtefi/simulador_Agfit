@@ -120,7 +120,7 @@ main {
 }
 
 .carousel-slide {
-    flex: 1 0 92%;
+    flex: 1 0 94%;
     padding: 20px;
     text-align: center;
 }
@@ -179,4 +179,14 @@ footer p {
 canvas {
     margin-top: 20px;
     max-width: 100%;
+}
+
+.day-plan ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.day-plan ul li {
+    margin-bottom: 5px;
 }
